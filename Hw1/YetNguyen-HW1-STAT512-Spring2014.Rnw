@@ -1,0 +1,124 @@
+\documentclass{article}
+% \usepackage[sc]{mathpazo}
+% \usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amsmath, amssymb, mathtools }
+\usepackage{enumerate}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{color}
+\usepackage{pstricks}
+% \usepackage{longtable}
+% \usepackage{fancyvrb}
+% \usepackage{fancyhdr}
+\usepackage{eqnarray}
+%\pagestyle{fancy}
+\usepackage{psfrag}
+\usepackage{epsfig,epsf}
+\usepackage{pstricks}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+            bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+            breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+{hyperref}
+\hypersetup{
+  pdfstartview={XYZ null null 1}}
+\usepackage{breakurl}
+\begin{document}
+
+<<setup, include=FALSE, cache=FALSE>>=
+  # set global chunk options
+  opts_chunk$set(fig.path='figure/minimal-', fig.align='center', fig.show='hold')
+options(replace.assign=TRUE,width=90)
+@
+
+\title{HW4 STAT544 Spring2014}
+
+\author{Yet Nguyen}
+
+\maketitle
+<<echo=FALSE>>=
+options(width=65)
+@
+
+\section*{Problem 1}
+Derive the posterior $p(\beta,\sigma|y)=p(\beta|\sigma^2,y)p(\sigma^2|y)$. 
+  \begin{itemize}
+  \item[(a)] Derive the conditional posterior for $\beta$, i.e. $p(\beta|\sigma^2,y)$.
+  
+  \item[(b)] Derive the marginal posteriof for $\sigma^2$, i.e. $p(\sigma^2|y)$.
+  \end{itemize}
+  
+  
+  Sol: 
+  Since $y|\beta, \sigma^2 \sim N(X\beta, \sigma^2I)$, and $p(\beta, \sigma^2)\propto 1/\sigma^2$, the posterior distribution of $(\beta, \sigma^2)$ is 
+  \begin{align*}
+  p(\beta, \sigma^2|y) & \propto p(y|\beta, \sigma^2) p(\beta, \sigma)\\
+        & \propto \sigma^{-n}\exp\Big(-\frac{1}{2\sigma^2}(y-X\beta)'(y - X\beta) \Big) \sigma^{-2}.
+  \end{align*}
+  
+  
+  We have 
+  \begin{align*}
+  (y - X\beta)'(y - X\beta) & = \beta'X'X\beta - 2y'X\beta + y'y\\
+          & = \beta' X'X \beta - 2\big((X'X)^{-1}X'y \big)' X'X \beta \\
+          & + \big((X'X)^{-1}X'y \big)'(X'X) \big((X'X)^{-1}X'y \big) \\
+          & + y'(I - X(X'X)^{-1}X' )y \\
+          & = (\beta - \hat{\beta})'V_\beta^{-1}(\beta - \hat{\beta}) + (n-k)s^2,
+  \end{align*}
+
+  where $\hat{\beta} = (X'X)^{-1}X'y, V_\beta = (X'X)^{-1}, s^2 =\frac{1}{n-k}y' (I-X(X'X)^{-1}X') y$. Therefore
+  \begin{align*}
+  p(\beta, \sigma^2|y) & \propto \sigma^{k} \exp\Big(-\frac{1}{2\sigma^2}(\beta - \hat{\beta})'V_\beta^{-1}(\beta - \hat{\beta}) \Big) (\sigma^2)^{-(\frac{n-k}{2}+1)} \exp\Big(-\frac{1}{2\sigma^2} (n-k)s^2 \Big),
+  \end{align*}
+  which implies that 
+  \begin{itemize}
+  \item[(a)] $p(\beta|\sigma^2,y) \sim N(\hat{\beta},\sigma^2 V_\beta ) $
+  \item[(b)] $p(\sigma^2|y) \sim Inv-\chi^2 (n-k, s^2)$.
+  \end{itemize}
+  
+  \section*{Problem 2}
+  For $\tilde{y} \sim N(\tilde{X}\beta,\sigma^2\mathrm{I})$ where $\tilde{X}$ is known, derive the posterior predictive distribution $p(\tilde{y}|y)$.
+  \begin{itemize}
+  \item[(a)] Derive the conditional posterior predictive distribution $p(\tilde{y}|\sigma^2,y)$.
+  
+  Sol: 
+  Since $\tilde{y}|\beta, \sigma^2 \sim  N(\tilde{X}\beta, \sigma^2 I )$ are independent to $y|\beta, \sigma^2$, and according to 1a),  $p(\beta|\sigma^2, y) \sim N(\hat{\beta}, \sigma^2 V_\beta)$, the conditional  posterior predictive distribution $p(\tilde{y}|\sigma^2, y) $ is normal distribution with mean 
+  \begin{align*}
+  E(\tilde{y}|\sigma^2, y ) & = E(E(\tilde{y}|\beta, \sigma^2, y) ) \\
+   & = E(\tilde{X}\beta|\sigma^2, y) \\
+   & = \tilde{X}\hat{\beta}
+  \end{align*}
+  
+  and variance
+  \begin{align*}
+  var(\tilde{y}|\sigma^2, y ) & = E(var(\tilde{y}|\beta, \sigma^2, y) ) + var(E(\tilde{y}|\beta, \sigma^2, y ))\\
+   & = E(var(\tilde{y}|\beta, \sigma^2) ) + var(E(\tilde{y}|\beta, \sigma^2))\\
+   & = E(\sigma^2 I |\sigma^2) + var(\tilde{X} \beta|\sigma^2 )\\
+   & = \sigma^2 I + \tilde{X} (\sigma^2)V_\beta \tilde{X}'\\
+   & = \sigma^2 (I + \tilde{X} V_\beta \tilde{X}')\\
+   & = \sigma^2 V_y,
+  \end{align*}
+  where $V_y = I + \tilde{X}V_\beta \tilde{X}' $.
+  \item[(b)] Use the result from 1b, to derive the posterior predictive distribution $p(\tilde{y}|y)$.
+  
+  Sol: 
+  From part 2a) and part 1b), the joint distribution $p(\tilde{y}, \sigma^2|y)$ is 
+  \begin{align*}
+  p(\tilde{y}, \sigma^2|y ) & \propto p(\tilde{y}|\sigma^2, y ) p(\sigma^2|y) \\
+    & \propto \sigma^{-n} \exp\Big(-\frac{1}{2\sigma^2}(\tilde{y} - \tilde{X} \hat{\beta})' V_y^{-1}(\tilde{y} - \tilde{X}\hat{\beta}) \Big)(\sigma^2)^{-(\frac{n-k}{2}+1)} \exp\Big(-\frac{1}{2\sigma^2}(n-k)s^2 \Big)\\
+    & \propto (\sigma^2) ^{-(\frac{2n-k}{2}+1)} \exp\Big(-\frac{1}{2\sigma^2}[(\tilde{y} - \tilde{X} \hat{\beta})' V_y^{-1}(\tilde{y} - \tilde{X}\hat{\beta}) + (n-k)s^2] \Big),
+  \end{align*}
+  which  has the form of Inv-$\chi^2$ distribution with respect to $\sigma^2$, therefore when integrating out over $\sigma^2$ we obtain the posterior predictive distribution $p(\tilde{y}|y)$ 
+  \begin{align*}
+  p(\tilde{y}|y) & \propto [(\tilde{y} - \tilde{X} \hat{\beta})' V_y^{-1}(\tilde{y} - \tilde{X}\hat{\beta}) + (n-k)s^2]^{-\frac{n+n-k}{2}}\\
+    & \propto [1 + \frac{1}{n-k} (\tilde{y} - \tilde{X} \hat{\beta})'(s^2V_y)^{-1}(\tilde{y} - \tilde{X}\hat{\beta})]^{-\frac{n+n-k}{2}},
+  \end{align*}
+  which is a multivariate $t$-distribution degree of freedom $n-k$, mean vector $\tilde{X}\hat{\beta}$ for $n-k>1$, and scaled matrix $s^2V_y$.
+  \end{itemize}
+
+\end{document}
