@@ -31,13 +31,24 @@ t(round(c(n1, n2, n3, n4)) +1)%*%c(1, 2, 2, 3)
 
 library(plyr)
 
+tau <- c(0.5, 0, 0, -0.5)
+design <- matrix(c(3,3,3,3,
+                   2,4,4,2,
+                   4,2,4,2
+                   ), byrow = F, nrow = 4 )
+
 pf(q, df1, df2, ncp, lower.tail = TRUE, log.p = FALSE)
 df1 <- 3
 df2 <- 8
 alpha <- 0.1
-ncp <- c(6, 1/3, 17/3)
+sigma <- 0.5
+ncp <- laply(1:ncol(design), function(i){
+  tau_bar <- mean(rep(tau, design[,i]))
+  1/sigma^2*as.vector(design[,i]%*%(tau- tau_bar)^2)
+
+})
 q <- qf(1-alpha, df1, df2)
 
-design_power <- laply(1:length(ncp), function(i) pf(q,df1, df2, ncp[i]))
+design_power <-1- laply(1:length(ncp), function(i) pf(q,df1, df2, ncp[i]))
 design_power
 
