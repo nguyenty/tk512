@@ -29,4 +29,15 @@ t(round(c(n1, n2, n3, n4)) +1)%*%c(1, 2, 2, 3)
 
 # 2.4
 
-# The 
+library(plyr)
+
+pf(q, df1, df2, ncp, lower.tail = TRUE, log.p = FALSE)
+df1 <- 3
+df2 <- 8
+alpha <- 0.1
+ncp <- c(6, 1/3, 17/3)
+q <- qf(1-alpha, df1, df2)
+
+design_power <- laply(1:length(ncp), function(i) pf(q,df1, df2, ncp[i]))
+design_power
+
