@@ -56,3 +56,10 @@ pvalues2 <- unlist(lapply(1:length(t_test), function(i){
 }))
 
 pvalues2
+
+# 4####
+
+xx <- matrix(c(1, 2, 1, 5, 
+               10, 11, 12, 13), 
+             byrow = T, nrow = 2)
+t(xx)
