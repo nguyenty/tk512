@@ -1,0 +1,116 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+\title{HW3 STAT512 Fall2014}
+
+\author{Yet Nguyen}
+
+\maketitle
+
+
+
+\section*{3.}
+Sol: 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{t} \hlkwb{<-} \hlnum{9} \hlcom{# number of treatment}
+\hlstd{N} \hlkwb{<-} \hlnum{36} \hlcom{# number of experiment units}
+\hlstd{ni} \hlkwb{<-} \hlstd{N}\hlopt{/}\hlstd{t} \hlcom{# number of experiment units per treatment}
+\hlstd{df1.crd} \hlkwb{<-} \hlstd{t} \hlopt{-} \hlnum{1} \hlcom{# numerator degree of freedom for CRD}
+\hlstd{df2.crd} \hlkwb{<-} \hlstd{N} \hlopt{-} \hlstd{t} \hlcom{# denuminator degree of freedom for CRD}
+\hlstd{trt} \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0.5}\hlstd{,} \hlnum{0.25}\hlstd{,} \hlnum{0}\hlstd{),} \hlkwc{each} \hlstd{=} \hlnum{3}\hlstd{)} \hlcom{# treatment mean}
+\hlstd{trt.bar} \hlkwb{<-} \hlkwd{mean}\hlstd{(trt)}
+\hlstd{sigma2.crd} \hlkwb{<-} \hlnum{0.1} \hlcom{# sigma2_CRD}
+\hlstd{q.trt} \hlkwb{<-} \hlkwd{sum}\hlstd{((trt} \hlopt{-} \hlstd{trt.bar)}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlstd{ncp.crd} \hlkwb{<-}\hlstd{q.trt}\hlopt{/}\hlstd{sigma2.crd} \hlcom{# non cemtral parameter}
+\hlstd{alpha} \hlkwb{<-} \hlnum{0.05} \hlcom{# alpha level}
+\hlstd{ftest.crd} \hlkwb{<-} \hlkwd{qf}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{alpha, df1.crd,df2.crd,} \hlkwc{ncp} \hlstd{=} \hlnum{0}\hlstd{)} \hlcom{# F test value}
+\hlstd{power.crd} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlkwd{pf}\hlstd{(ftest.crd, df1.crd, df2.crd,} \hlkwc{ncp} \hlstd{= ncp.crd)} \hlcom{# power of CRD}
+\hlstd{power.crd}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.1764
+\end{verbatim}
+\begin{alltt}
+\hlcom{## We calculate the same quantities for BIBD}
+
+\hlstd{b} \hlkwb{<-} \hlnum{12}
+\hlstd{k} \hlkwb{<-} \hlnum{3}
+\hlstd{t} \hlkwb{<-} \hlnum{9}
+\hlstd{r} \hlkwb{<-} \hlstd{b}\hlopt{*}\hlstd{k}\hlopt{/}\hlstd{t}
+\hlstd{q.bibd} \hlkwb{<-} \hlkwd{sum}\hlstd{((trt} \hlopt{-} \hlstd{trt.bar)}\hlopt{^}\hlnum{2}\hlstd{)}
+
+\hlstd{df1.bibd} \hlkwb{<-} \hlstd{t}\hlopt{-}\hlnum{1}
+\hlstd{df2.bibd} \hlkwb{<-} \hlstd{b}\hlopt{*}\hlstd{k} \hlopt{-} \hlstd{t} \hlopt{-} \hlstd{b} \hlopt{+}\hlnum{1}
+\hlcom{## the function below calculates the difference between powers of BIBD and CRD}
+\hlstd{diff.power}\hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{sigma2}\hlstd{)\{}
+  \hlstd{ftest.bibd} \hlkwb{<-} \hlkwd{qf}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{alpha, df1.bibd,df2.bibd,} \hlkwc{ncp} \hlstd{=} \hlnum{0}\hlstd{)} \hlcom{# F test value}
+  \hlstd{out} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlkwd{pf}\hlstd{(ftest.bibd, df1.bibd, df2.bibd,} \hlkwc{ncp} \hlstd{= t}\hlopt{*}\hlstd{(t}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{/}\hlstd{(k}\hlopt{*}\hlstd{(k}\hlopt{-}\hlnum{1}\hlstd{))}\hlopt{*}\hlstd{q.bibd}\hlopt{/}\hlstd{sigma2)} \hlcom{# power }
+  \hlkwd{return}\hlstd{(out}\hlopt{-}\hlstd{power.crd)} \hlcom{# difference of the two powers}
+\hlstd{\}}
+
+\hlcom{## Root of the diff.power is the value of sigma2_BIBD that we need }
+\hlkwd{uniroot}\hlstd{(diff.power,} \hlkwd{c}\hlstd{(}\hlnum{0.0001}\hlstd{,}\hlnum{2}\hlstd{) )}\hlopt{$}\hlstd{root}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.031
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Hence, $\sigma^2_{BIBD} = 1.031$ is the value  of the response variance for the BIBD such that the power of the F-test of the BIBD at the $\alpha = 0.05$ equal to that of CRD.
+\end{document}

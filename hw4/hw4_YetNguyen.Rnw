@@ -1,0 +1,63 @@
+\documentclass{article}
+
+\begin{document}
+
+<<setup, include=FALSE, cache=FALSE>>=
+  # set global chunk options
+  opts_chunk$set(fig.path='figure/minimal-', fig.align='center', fig.show='hold')
+options(replace.assign=TRUE,width=100)
+@
+
+\title{HW3 STAT512 Fall2014}
+
+\author{Yet Nguyen}
+
+\maketitle
+<<echo=FALSE>>=
+options(width=80)
+@
+
+
+\section*{3.}
+Sol: 
+
+<<>>=
+
+t <- 9 # number of treatment
+N <- 36 # number of experiment units
+ni <- N/t # number of experiment units per treatment
+df1.crd <- t - 1 # numerator degree of freedom for CRD
+df2.crd <- N - t # denuminator degree of freedom for CRD
+trt <- rep(c(0.5, 0.25, 0), each = 3) # treatment mean
+trt.bar <- mean(trt) 
+sigma2.crd <- 0.1 # sigma2_CRD
+q.trt <- sum((trt - trt.bar)^2)
+ncp.crd <-q.trt/sigma2.crd # non cemtral parameter
+alpha <- 0.05 # alpha level
+ftest.crd <- qf(1-alpha, df1.crd,df2.crd, ncp = 0) # F test value
+power.crd <- 1 - pf(ftest.crd, df1.crd, df2.crd, ncp = ncp.crd) # power of CRD
+power.crd
+## We calculate the same quantities for BIBD
+
+b <- 12
+k <- 3
+t <- 9
+r <- b*k/t
+q.bibd <- sum((trt - trt.bar)^2)
+
+df1.bibd <- t-1
+df2.bibd <- b*k - t - b +1
+## the function below calculates the difference between powers of BIBD and CRD
+diff.power<- function(sigma2){
+  ftest.bibd <- qf(1-alpha, df1.bibd,df2.bibd, ncp = 0) # F test value
+  out <- 1 - pf(ftest.bibd, df1.bibd, df2.bibd, ncp = t*(t-1)/(k*(k-1))*q.bibd/sigma2) # power 
+  return(out-power.crd) # difference of the two powers
+}
+
+## Root of the diff.power is the value of sigma2_BIBD that we need 
+uniroot(diff.power, c(0.0001,2) )$root
+  
+@
+
+Hence, $\sigma^2_{BIBD} = 1.031$ is the value  of the response variance for the BIBD such that the power of the F-test of the BIBD at the $\alpha = 0.05$ equal to that of CRD.
+\end{document}
