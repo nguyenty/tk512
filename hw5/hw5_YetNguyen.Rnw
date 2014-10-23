@@ -1,0 +1,72 @@
+\documentclass{article}
+
+\begin{document}
+
+<<setup, include=FALSE, cache=FALSE>>=
+  # set global chunk options
+  opts_chunk$set(fig.path='figure/minimal-', fig.align='center', fig.show='hold')
+options(replace.assign=TRUE,width=100)
+@
+
+\title{HW5 STAT512 Fall2014}
+
+\author{Yet Nguyen}
+  
+\maketitle
+<<echo=FALSE>>=
+options(width=80)
+@
+
+\section*{1.}
+<<message = FALSE,results='asis'>>=
+library(reshape2)
+library(xtable)
+dat <- matrix(c(1, 360, 67, 73, 83, 89, 
+                1, 370, 65, 91, 87, 86, 
+                1, 380, 155, 127, 147, 212, 
+                2, 380, 108, 100, 90, 153, 
+                2, 370, 140, 142, 121, 150, 
+                2, 360, 33, 8, 46, 54), 
+              byrow = T, nrow = 6)
+dat <- as.data.frame(dat)
+colnames(dat) <- c("rep", "temp", paste0("coating", 1:4))
+dat$temp <- as.factor(dat$temp)
+dat$rep <- as.factor(dat$rep)
+dat.melt <- melt(dat)
+colnames(dat.melt) <- c("rep","temp", "coating", "y")
+
+lmout <- lm(y~temp*coating , data = dat.melt)
+ano <- anova(lmout)
+@
+
+
+<<message = FALSE,results='asis'>>=
+print(xtable(ano, caption ="ANOVA table and F-statistics, 
+             degree of freedom, 
+             and pvalue for the three tests."))
+@
+
+\section*{2.}
+<<message =FALSE,warning=FALSE>>=
+res <- aov(y ~temp * coating + Error(temp:rep), data = dat.melt)
+@
+
+Whole Plot ANOVA
+<<results='asis', warning=FALSE, message=FALSE>>=
+print(xtable(summary(res)[[1]], caption = "Whole Plot ANOVA 
+             including F-test, degree of freedom,
+             and p-value of the test for main 
+             effect of temperature factor."))
+@
+
+Split-Plot ANOVA 
+
+<<results='asis', warning=FALSE, message=FALSE>>=
+print(xtable(summary(res)[[2]], caption = "Split-Plot ANOVA 
+             including F-test, 
+             degree of freedom,
+             and p-value of the tests for the 
+             main effect of coating and 
+             interaction of temperature and coating."))
+@
+\end{document}

@@ -1,0 +1,182 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+\title{HW5 STAT512 Fall2014}
+
+\author{Yet Nguyen}
+  
+\maketitle
+
+
+\section*{1.}
+\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(reshape2)}
+\hlkwd{library}\hlstd{(xtable)}
+\hlstd{dat} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{360}\hlstd{,} \hlnum{67}\hlstd{,} \hlnum{73}\hlstd{,} \hlnum{83}\hlstd{,} \hlnum{89}\hlstd{,}
+                \hlnum{1}\hlstd{,} \hlnum{370}\hlstd{,} \hlnum{65}\hlstd{,} \hlnum{91}\hlstd{,} \hlnum{87}\hlstd{,} \hlnum{86}\hlstd{,}
+                \hlnum{1}\hlstd{,} \hlnum{380}\hlstd{,} \hlnum{155}\hlstd{,} \hlnum{127}\hlstd{,} \hlnum{147}\hlstd{,} \hlnum{212}\hlstd{,}
+                \hlnum{2}\hlstd{,} \hlnum{380}\hlstd{,} \hlnum{108}\hlstd{,} \hlnum{100}\hlstd{,} \hlnum{90}\hlstd{,} \hlnum{153}\hlstd{,}
+                \hlnum{2}\hlstd{,} \hlnum{370}\hlstd{,} \hlnum{140}\hlstd{,} \hlnum{142}\hlstd{,} \hlnum{121}\hlstd{,} \hlnum{150}\hlstd{,}
+                \hlnum{2}\hlstd{,} \hlnum{360}\hlstd{,} \hlnum{33}\hlstd{,} \hlnum{8}\hlstd{,} \hlnum{46}\hlstd{,} \hlnum{54}\hlstd{),}
+              \hlkwc{byrow} \hlstd{= T,} \hlkwc{nrow} \hlstd{=} \hlnum{6}\hlstd{)}
+\hlstd{dat} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(dat)}
+\hlkwd{colnames}\hlstd{(dat)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"rep"}\hlstd{,} \hlstr{"temp"}\hlstd{,} \hlkwd{paste0}\hlstd{(}\hlstr{"coating"}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{))}
+\hlstd{dat}\hlopt{$}\hlstd{temp} \hlkwb{<-} \hlkwd{as.factor}\hlstd{(dat}\hlopt{$}\hlstd{temp)}
+\hlstd{dat}\hlopt{$}\hlstd{rep} \hlkwb{<-} \hlkwd{as.factor}\hlstd{(dat}\hlopt{$}\hlstd{rep)}
+\hlstd{dat.melt} \hlkwb{<-} \hlkwd{melt}\hlstd{(dat)}
+\hlkwd{colnames}\hlstd{(dat.melt)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"rep"}\hlstd{,}\hlstr{"temp"}\hlstd{,} \hlstr{"coating"}\hlstd{,} \hlstr{"y"}\hlstd{)}
+
+\hlstd{lmout} \hlkwb{<-} \hlkwd{lm}\hlstd{(y}\hlopt{~}\hlstd{temp}\hlopt{*}\hlstd{coating ,} \hlkwc{data} \hlstd{= dat.melt)}
+\hlstd{ano} \hlkwb{<-} \hlkwd{anova}\hlstd{(lmout)}
+\end{alltt}
+\end{kframe}
+
+
+\begin{kframe}
+\begin{alltt}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(ano,} \hlkwc{caption} \hlstd{=}\hlstr{"ANOVA table and F-statistics, 
+             degree of freedom, 
+             and pvalue for the three tests."}\hlstd{))}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.1.1 by xtable 1.7-4 package
+% Thu Oct 23 18:11:10 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+  \hline
+ & Df & Sum Sq & Mean Sq & F value & Pr($>$F) \\ 
+  \hline
+temp & 2 & 26519.25 & 13259.62 & 10.23 & 0.0026 \\ 
+  coating & 3 & 4289.12 & 1429.71 & 1.10 & 0.3860 \\ 
+  temp:coating & 6 & 3269.75 & 544.96 & 0.42 & 0.8518 \\ 
+  Residuals & 12 & 15560.50 & 1296.71 &  &  \\ 
+   \hline
+\end{tabular}
+\caption{ANOVA table and F-statistics, 
+             degree of freedom, 
+             and pvalue for the three tests.} 
+\end{table}
+
+
+\section*{2.}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{res} \hlkwb{<-} \hlkwd{aov}\hlstd{(y} \hlopt{~}\hlstd{temp} \hlopt{*} \hlstd{coating} \hlopt{+} \hlkwd{Error}\hlstd{(temp}\hlopt{:}\hlstd{rep),} \hlkwc{data} \hlstd{= dat.melt)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Whole Plot ANOVA
+\begin{kframe}
+\begin{alltt}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(}\hlkwd{summary}\hlstd{(res)[[}\hlnum{1}\hlstd{]],} \hlkwc{caption} \hlstd{=} \hlstr{"Whole Plot ANOVA 
+             including F-test, degree of freedom,
+             and p-value of the test for main 
+             effect of temperature factor."}\hlstd{))}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.1.1 by xtable 1.7-4 package
+% Thu Oct 23 18:11:10 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+  \hline
+ & Df & Sum Sq & Mean Sq & F value & Pr($>$F) \\ 
+  \hline
+temp      & 2 & 26519.25 & 13259.62 & 2.75 & 0.2093 \\ 
+  Residuals & 3 & 14439.62 & 4813.21 &  &  \\ 
+   \hline
+\end{tabular}
+\caption{Whole Plot ANOVA 
+             including F-test, degree of freedom,
+             and p-value of the test for main 
+             effect of temperature factor.} 
+\end{table}
+
+
+Split-Plot ANOVA 
+
+\begin{kframe}
+\begin{alltt}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(}\hlkwd{summary}\hlstd{(res)[[}\hlnum{2}\hlstd{]],} \hlkwc{caption} \hlstd{=} \hlstr{"Split-Plot ANOVA 
+             including F-test, 
+             degree of freedom,
+             and p-value of the tests for the 
+             main effect of coating and 
+             interaction of temperature and coating."}\hlstd{))}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.1.1 by xtable 1.7-4 package
+% Thu Oct 23 18:11:10 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+  \hline
+ & Df & Sum Sq & Mean Sq & F value & Pr($>$F) \\ 
+  \hline
+coating      & 3 & 4289.12 & 1429.71 & 11.48 & 0.0020 \\ 
+  temp:coating & 6 & 3269.75 & 544.96 & 4.38 & 0.0241 \\ 
+  Residuals    & 9 & 1120.87 & 124.54 &  &  \\ 
+   \hline
+\end{tabular}
+\caption{Split-Plot ANOVA 
+             including F-test, 
+             degree of freedom,
+             and p-value of the tests for the 
+             main effect of coating and 
+             interaction of temperature and coating.} 
+\end{table}
+
+\end{document}
