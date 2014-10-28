@@ -56,4 +56,23 @@ If V2 and V3:V5 are included in the model, then
 \item to sastify the hierachy principle,  we need to include factors V3, V5.
 \item to sastify the heredity principle, we need to include either V3 or V5.
 \end{itemize}
+\section*{4.}
+<<>>=
+N <- 64
+SSE <- 1000
+# The value of actual standard error against which each pactorial effect estimat should be compared is 
+sigma <- sqrt(SSE/N)
+sigma
+@
+
+\section*{5.}
+<<>>=
+theta2 <- coef[-c(1:16)]
+theta2
+r <- 2
+f <- 5
+SST <- r*2^f*as.vector(t(theta2)%*%theta2)
+p2 <- length(theta2)
+Ftest <- 
+@
 \end{document}
