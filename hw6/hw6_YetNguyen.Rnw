@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\begin{document}
+
+<<setup, include=FALSE, cache=FALSE>>=
+  # set global chunk options
+  opts_chunk$set(fig.path='figure/minimal-', fig.align='center', fig.show='hold')
+options(replace.assign=TRUE,width=100)
+@
+
+\title{HW6 STAT512 Fall2014}
+
+\author{Yet Nguyen}
+  
+\maketitle
+<<echo=FALSE>>=
+options(width=80)
+@
+
+\section*{1.}
+<<>>=
+setwd("~/Desktop/tk512/hw6")
+dat <- read.table("HW6_data_2014.txt")
+dat[,1:5][dat[,1:5]==1] <- -1
+dat[,1:5][dat[,1:5]==2] <- 1
+coef <- summary(lm(V6~V1*V2*V3*V4*V5, data = dat))$coef[,1]
+sort.coef <- abs(coef[order(abs(coef))])
+n <- 31
+p <- 1/2+ (1:n-1/2)/(2*n)
+q <- qnorm(p)
+plot(q, sort.coef[-32], main = "haft-normal Plot", 
+     xlab = "nonnegative normal quantiles", 
+     ylab = "|estimates|")
+@
+\end{document}
