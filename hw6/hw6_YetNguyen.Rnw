@@ -14,7 +14,7 @@ options(replace.assign=TRUE,width=100)
   
 \maketitle
 <<echo=FALSE>>=
-options(width=80)
+options(width=60)
 @
 
 \section*{1.}
@@ -25,6 +25,7 @@ dat[,1:5][dat[,1:5]==1] <- -1
 dat[,1:5][dat[,1:5]==2] <- 1
 coef <- summary(lm(V6~V1*V2*V3*V4*V5, data = dat))$coef[,1]
 sort.coef <- abs(coef[order(abs(coef))])
+sort.coef
 n <- 31
 p <- 1/2+ (1:n-1/2)/(2*n)
 q <- qnorm(p)
@@ -32,4 +33,27 @@ plot(q, sort.coef[-32], main = "haft-normal Plot",
      xlab = "nonnegative normal quantiles", 
      ylab = "|estimates|")
 @
+Based on the plot, I think the factorial effects are non-zero are V2, V3:V5.
+
+\section*{2.}
+<<>>=
+B <- sort.coef[-32]
+# initial robust estimate of sigma/N
+s0 <- 1.5*median(B)
+# Let Bs be the subset of B less than 2.5 * s0
+Bs <- B[B<=2.5*s0]
+# compute the pseudo standard error
+PSE <- 1.5 * median(Bs)
+PSE
+# which coeficients greater  than t*PSE
+t <- 1.8
+which(B>=t*PSE)
+@
+
+\section*{3.}
+If V2 and V3:V5 are included in the model, then 
+\begin{itemize}
+\item to sastify the hierachy principle,  we need to include factors V3, V5.
+\item to sastify the heredity principle, we need to include either V3 or V5.
+\end{itemize}
 \end{document}

@@ -70,6 +70,27 @@
 \hlstd{dat[,}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{][dat[,}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}\hlopt{==}\hlnum{2}\hlstd{]} \hlkwb{<-} \hlnum{1}
 \hlstd{coef} \hlkwb{<-} \hlkwd{summary}\hlstd{(}\hlkwd{lm}\hlstd{(V6}\hlopt{~}\hlstd{V1}\hlopt{*}\hlstd{V2}\hlopt{*}\hlstd{V3}\hlopt{*}\hlstd{V4}\hlopt{*}\hlstd{V5,} \hlkwc{data} \hlstd{= dat))}\hlopt{$}\hlstd{coef[,}\hlnum{1}\hlstd{]}
 \hlstd{sort.coef} \hlkwb{<-} \hlkwd{abs}\hlstd{(coef[}\hlkwd{order}\hlstd{(}\hlkwd{abs}\hlstd{(coef))])}
+\hlstd{sort.coef}
+\end{alltt}
+\begin{verbatim}
+##          V3:V4          V2:V3       V1:V2:V5       V1:V4:V5 
+##       0.003125       0.028125       0.046875       0.053125 
+##          V4:V5       V2:V3:V4          V1:V4    V1:V2:V4:V5 
+##       0.059375       0.090625       0.103125       0.146875 
+##             V1          V2:V5          V2:V4       V2:V4:V5 
+##       0.153125       0.178125       0.221875       0.303125 
+##             V3    V1:V2:V3:V4       V2:V3:V5             V4 
+##       0.309375       0.378125       0.490625       0.546875 
+##    V1:V3:V4:V5       V1:V3:V4          V1:V3 V1:V2:V3:V4:V5 
+##       0.559375       0.603125       0.609375       0.671875 
+##       V1:V2:V4          V1:V5       V3:V4:V5       V1:V2:V3 
+##       0.734375       0.746875       0.746875       0.784375 
+##    V1:V2:V3:V5    V2:V3:V4:V5       V1:V3:V5             V5 
+##       0.815625       0.896875       0.903125       1.034375 
+##          V1:V2          V3:V5             V2    (Intercept) 
+##       1.190625       1.465625       3.478125      75.321875
+\end{verbatim}
+\begin{alltt}
 \hlstd{n} \hlkwb{<-} \hlnum{31}
 \hlstd{p} \hlkwb{<-} \hlnum{1}\hlopt{/}\hlnum{2}\hlopt{+} \hlstd{(}\hlnum{1}\hlopt{:}\hlstd{n}\hlopt{-}\hlnum{1}\hlopt{/}\hlnum{2}\hlstd{)}\hlopt{/}\hlstd{(}\hlnum{2}\hlopt{*}\hlstd{n)}
 \hlstd{q} \hlkwb{<-} \hlkwd{qnorm}\hlstd{(p)}
@@ -86,4 +107,40 @@
 
 
 \end{knitrout}
+Based on the plot, I think the factorial effects are non-zero are V2, V3:V5.
+
+\section*{2.}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{B} \hlkwb{<-} \hlstd{sort.coef[}\hlopt{-}\hlnum{32}\hlstd{]}
+\hlcom{# initial robust estimate of sigma/N}
+\hlstd{s0} \hlkwb{<-} \hlnum{1.5}\hlopt{*}\hlkwd{median}\hlstd{(B)}
+\hlcom{# Let Bs be the subset of B less than 2.5 * s0}
+\hlstd{Bs} \hlkwb{<-} \hlstd{B[B}\hlopt{<=}\hlnum{2.5}\hlopt{*}\hlstd{s0]}
+\hlcom{# compute the pseudo standard error}
+\hlstd{PSE} \hlkwb{<-} \hlnum{1.5} \hlopt{*} \hlkwd{median}\hlstd{(Bs)}
+\hlstd{PSE}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.7781
+\end{verbatim}
+\begin{alltt}
+\hlcom{# which coeficients greater  than t*PSE}
+\hlstd{t} \hlkwb{<-} \hlnum{1.8}
+\hlkwd{which}\hlstd{(B}\hlopt{>=}\hlstd{t}\hlopt{*}\hlstd{PSE)}
+\end{alltt}
+\begin{verbatim}
+## V3:V5    V2 
+##    30    31
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\section*{3.}
+If V2 and V3:V5 are included in the model, then 
+\begin{itemize}
+\item to sastify the hierachy principle,  we need to include factors V3, V5.
+\item to sastify the heredity principle, we need to include either V3 or V5.
+\end{itemize}
 \end{document}

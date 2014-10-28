@@ -60,7 +60,7 @@ print(xtable(ano, caption ="ANOVA table and F-statistics,
 
 ```
 % latex table generated in R 3.1.1 by xtable 1.7-4 package
-% Thu Oct 23 16:07:42 2014
+% Tue Oct 28 17:42:50 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrrr}
@@ -96,7 +96,7 @@ print(xtable(summary(res)[[1]], caption = "Whole Plot ANOVA
 
 ```
 % latex table generated in R 3.1.1 by xtable 1.7-4 package
-% Thu Oct 23 16:07:42 2014
+% Tue Oct 28 17:42:50 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrrr}
@@ -128,7 +128,7 @@ print(xtable(summary(res)[[2]], caption = "Split-Plot ANOVA
 
 ```
 % latex table generated in R 3.1.1 by xtable 1.7-4 package
-% Thu Oct 23 16:07:42 2014
+% Tue Oct 28 17:42:50 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrrr}
