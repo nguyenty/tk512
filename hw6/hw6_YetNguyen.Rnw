@@ -1,5 +1,5 @@
 \documentclass{article}
-
+\usepackage{amsmath}
 \begin{document}
 
 <<setup, include=FALSE, cache=FALSE>>=
@@ -88,4 +88,48 @@ Ftest
 ## pvalue of the test
 1 - pf(Ftest, p2, p1)
 @
+
+\section*{6.}
+
+This is a nested-design or split-split-split plot design. 
+\begin{itemize}
+\item The largest plot (whole plot) factor is NaOH, denoted as factor "A" with $a = 2$ levels, number of the replicates is $r = 2$. Hence, 
+degree freedom for construct a standard error for A main effect is $a(r-1) = 2$.
+\item The next largest plot (split plot) factor is Na2SO3, denoted as "B", with $b = 2$ levels. 
+Hence, 
+degree freedom for construct a standard error for A main effect is 
+\[
+(abr -1) - (ar-1) - (b-1) - (a-1)(b-1)= a(b-1)(r-1) = 2.
+\]
+
+\item The next largest plot (split-split plot) factor is dispersant, denoted as "C", with $c = 2$ levels. 
+Hence, 
+degree freedom for construct a standard error for C main effect is 
+\begin{align*}
+(abcr -1) - & (abr-1) - (c-1) - (c-1)(a-1)\\
+& - (c-1)(b-1) - (a-1)(b-1)(c-1) \\
+& = abr(c-1) - (c-1)ab\\
+& = ab(c-1)(r-1) =4.
+\end{align*}
+\item The last plot (split-split-split plot) factos are pressuare and time, denoted as "D", "E"
+with levels $d = e= 2$. 
+Hence, 
+degree freedom for construct a standard error for D, E main effects is 
+\begin{align*}
+(abcder -1) -& (abcr-1) - (d-1) - (e-1) - (d-1)(e-1) \\
+             & -(d-1)[(a-1) + (b-1) + (c-1)] \\
+             & - (d-1)[(a-1)(b-1) + (a-1)(c-1) + (b-1)(c-1)]\\
+             & - (d-1)(a-1)(b-1)(c-1)\\
+             & -(e-1)[(a-1) + (b-1) + (c-1)] \\
+             & - (e-1)[(a-1)(b-1) + (a-1)(c-1) + (b-1)(c-1)]\\
+             & - (e-1)(a-1)(b-1)(c-1)\\
+             & - (d-1)(e-1)[(a-1) +(b-1) + (c-1)]\\
+             & - (d-1)(e-1)[(a-1)(b-1) +(b-1)(c-1) + (c-1)(a-1)]\\
+             & - (d-1)(e-1)(a-1)(b-1)(c-1)\\
+             &= abcr(de-1) - abc(de-1)\\
+             & = abc(de-1)(r-1)\\
+             & = 2*2*2*(2*2-1)*(2-1) = 24.
+\end{align*}
+\end{itemize}
+
 \end{document}
