@@ -60,8 +60,9 @@ If V2 and V3:V5 are included in the model, then
 <<>>=
 N <- 64
 SSE <- 1000
-# The value of actual standard error against which each pactorial effect estimat should be compared is 
-sigma <- sqrt(SSE/N)
+s2.p <- SSE/32
+# The value of actual standard error against which each factorial effect estimat should be compared is 
+sigma <- sqrt(s2.p/N)
 sigma
 @
 
@@ -72,7 +73,19 @@ theta2
 r <- 2
 f <- 5
 SST <- r*2^f*as.vector(t(theta2)%*%theta2)
+## Degree of freedom of the numerator 
 p2 <- length(theta2)
-Ftest <- 
+p2
+## Degree of freedom of the denominator
+p1 <- 2^f*(r-1)
+p1
+
+## F test value
+Ftest <- (SST/p2)/sigma^2
+
+Ftest
+
+## pvalue of the test
+1 - pf(Ftest, p2, p1)
 @
 \end{document}
