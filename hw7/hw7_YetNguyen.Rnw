@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+<<setup, include=FALSE, cache=FALSE>>=
+  # set global chunk options
+  opts_chunk$set(fig.path='figure/minimal-', fig.align='center', fig.show='hold')
+options(replace.assign=TRUE,width=100)
+@
+
+\title{HW6 STAT512 Fall2014}
+
+\author{Yet Nguyen}
+  
+\maketitle
+<<echo=FALSE>>=
+options(width=60)
+@
+
+\section*{1.}
+<<>>=
+## data
+dat <-as.data.frame( matrix(c(2, 150, 8, 7.54, 6.66, 
+                30, 100, 40, 12.65, 15.96, 
+                30, 150, 8, 12.46, 12.62, 
+                2, 100, 40, 10.95, 17.68, 
+                30, 100, 8, 15.12, 17.46, 
+                30, 150, 40, 14.92, 14.96, 
+                2, 150, 40, 8.03, 8.84, 
+                2, 100, 8, 14.68, 15.18), nrow = 8, byrow = T))
+
+dat
+dat[dat[,1]==2,1] <- -1
+dat[dat[,1]==30,1] <- 1
+
+dat[dat[,2]==100,2] <- -1
+dat[dat[,2]==150,2] <- 1
+
+dat[dat[,3]==8,3] <- -1
+dat[dat[,3]==40,3] <- 1
+
+
+@
+\end{document}
