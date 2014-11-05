@@ -96,3 +96,73 @@ pvalue22==pvalue2
 
 
 #############3###############
+
+block <-c(1,1,2,2,3,4,3,4,5,5,6,6,7,8,7,8)
+block <- as.factor(block)
+block
+
+dat.block <- (cbind(rbind(X, X), block, y= c(dat[,4], dat[,5])))
+rownames(dat.block) <- 1:16
+dat.block <- as.data.frame(dat.block)
+dat.block$block <- as.factor(dat.block$block)
+anova1 <- anova(lm(y ~block, data = dat.block))
+ssb<- anova1[1,2]
+sum(anova1[,2])
+ssb
+## factorial estimate in the case of unblock ####
+dat.block
+X2 <- rbind(X, X)
+dat <- as.data.frame(dat)
+dat2 <- cbind(rbind(dat[,1:3], dat[,1:3]), y = c(dat[,4], dat[,5]))
+lmout2 <- lm(y ~ V1*V2*V3, data = dat2)
+
+coef <- summary(lmout2)$coefficients[,1]
+anova2 <- anova(lmout2)
+ssct <- sum(anova2[,2])
+sst <- sum(est.coef[ -c(1, 5,6,7)]^2)*16
+sst
+anova2
+sum(anova2[c(1,2,3,7),2])
+sse <- ssct - sst - ssb 
+sse
+
+mse <- sse/4
+se.est <- sqrt(mse/n)
+se.est
+# Ftest
+
+ftest <- (sst/4)/(sse/4)
+pvalue <- 1 - pf(ftest, 4,4)
+pvalue 
+##########finish 1a)###############
+
+########1b#####################
+## LSE of all estimable factorial effects and compute their standard error######
+coef[c(2,3,4,8)]
+
+### standard error of those estimates#####
+se.coef <- sqrt(mse/16) 
+se.coef
+
+
+
+###4#############
+v123 <- coef[c(5,6,7)]
+n <- 16
+sse.2b <- ssb - n*sum(v123^2)
+mse.2b <- sse.2b/4
+mse.2b
+
+se.v123 <- sqrt(mse.2b/n)
+se.v123
+
+ssb
+ftest2 <- n*sum(v123^2)/mse.2b
+
+pvalue22 <- 1 - pf(ftest2, 1, 2)
+pvalue22
+########finish 4#############
+
+#################5########################3
+
+

@@ -48,6 +48,7 @@
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
 \usepackage{alltt}
+\usepackage{amsmath}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -143,4 +144,119 @@ If V2 and V3:V5 are included in the model, then
 \item to sastify the hierachy principle,  we need to include factors V3, V5.
 \item to sastify the heredity principle, we need to include either V3 or V5.
 \end{itemize}
+\section*{4.}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{N} \hlkwb{<-} \hlnum{64}
+\hlstd{SSE} \hlkwb{<-} \hlnum{1000}
+\hlstd{s2.p} \hlkwb{<-} \hlstd{SSE}\hlopt{/}\hlnum{32}
+\hlcom{# The value of actual standard error against which each factorial effect estimat should be compared is }
+\hlstd{sigma} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(s2.p}\hlopt{/}\hlstd{N)}
+\hlstd{sigma}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.6988
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\section*{5.}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{theta2} \hlkwb{<-} \hlstd{coef[}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{16}\hlstd{)]}
+\hlstd{theta2}
+\end{alltt}
+\begin{verbatim}
+##       V1:V2:V3       V1:V2:V4       V1:V3:V4       V2:V3:V4 
+##        0.78438       -0.73438       -0.60313       -0.09063 
+##       V1:V2:V5       V1:V3:V5       V2:V3:V5       V1:V4:V5 
+##       -0.04687       -0.90312       -0.49062        0.05312 
+##       V2:V4:V5       V3:V4:V5    V1:V2:V3:V4    V1:V2:V3:V5 
+##        0.30312        0.74687        0.37813        0.81562 
+##    V1:V2:V4:V5    V1:V3:V4:V5    V2:V3:V4:V5 V1:V2:V3:V4:V5 
+##        0.14688       -0.55937       -0.89687        0.67187
+\end{verbatim}
+\begin{alltt}
+\hlstd{r} \hlkwb{<-} \hlnum{2}
+\hlstd{f} \hlkwb{<-} \hlnum{5}
+\hlstd{SST} \hlkwb{<-} \hlstd{r}\hlopt{*}\hlnum{2}\hlopt{^}\hlstd{f}\hlopt{*}\hlkwd{as.vector}\hlstd{(}\hlkwd{t}\hlstd{(theta2)}\hlopt{%*%}\hlstd{theta2)}
+\hlcom{## Degree of freedom of the numerator }
+\hlstd{p2} \hlkwb{<-} \hlkwd{length}\hlstd{(theta2)}
+\hlstd{p2}
+\end{alltt}
+\begin{verbatim}
+## [1] 16
+\end{verbatim}
+\begin{alltt}
+\hlcom{## Degree of freedom of the denominator}
+\hlstd{p1} \hlkwb{<-} \hlnum{2}\hlopt{^}\hlstd{f}\hlopt{*}\hlstd{(r}\hlopt{-}\hlnum{1}\hlstd{)}
+\hlstd{p1}
+\end{alltt}
+\begin{verbatim}
+## [1] 32
+\end{verbatim}
+\begin{alltt}
+\hlcom{## F test value}
+\hlstd{Ftest} \hlkwb{<-} \hlstd{(SST}\hlopt{/}\hlstd{p2)}\hlopt{/}\hlstd{sigma}\hlopt{^}\hlnum{2}
+
+\hlstd{Ftest}
+\end{alltt}
+\begin{verbatim}
+## [1] 46.17
+\end{verbatim}
+\begin{alltt}
+\hlcom{## pvalue of the test}
+\hlnum{1} \hlopt{-} \hlkwd{pf}\hlstd{(Ftest, p2, p1)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\section*{6.}
+
+This is a nested-design or split-split-split plot design. 
+\begin{itemize}
+\item The largest plot (whole plot) factor is NaOH, denoted as factor "A" with $a = 2$ levels, number of the replicates is $r = 2$. Hence, 
+degree freedom for construct a standard error for A main effect is $a(r-1) = 2$.
+\item The next largest plot (split plot) factor is Na2SO3, denoted as "B", with $b = 2$ levels. 
+Hence, 
+degree freedom for construct a standard error for A main effect is 
+\[
+(abr -1) - (ar-1) - (b-1) - (a-1)(b-1)= a(b-1)(r-1) = 2.
+\]
+
+\item The next largest plot (split-split plot) factor is dispersant, denoted as "C", with $c = 2$ levels. 
+Hence, 
+degree freedom for construct a standard error for C main effect is 
+\begin{align*}
+(abcr -1) - & (abr-1) - (c-1) - (c-1)(a-1)\\
+& - (c-1)(b-1) - (a-1)(b-1)(c-1) \\
+& = abr(c-1) - (c-1)ab\\
+& = ab(c-1)(r-1) =4.
+\end{align*}
+\item The last plot (split-split-split plot) factos are pressuare and time, denoted as "D", "E"
+with levels $d = e= 2$. 
+Hence, 
+degree freedom for construct a standard error for D, E main effects is 
+\begin{align*}
+(abcder -1) -& (abcr-1) - (d-1) - (e-1) - (d-1)(e-1) \\
+             & -(d-1)[(a-1) + (b-1) + (c-1)] \\
+             & - (d-1)[(a-1)(b-1) + (a-1)(c-1) + (b-1)(c-1)]\\
+             & - (d-1)(a-1)(b-1)(c-1)\\
+             & -(e-1)[(a-1) + (b-1) + (c-1)] \\
+             & - (e-1)[(a-1)(b-1) + (a-1)(c-1) + (b-1)(c-1)]\\
+             & - (e-1)(a-1)(b-1)(c-1)\\
+             & - (d-1)(e-1)[(a-1) +(b-1) + (c-1)]\\
+             & - (d-1)(e-1)[(a-1)(b-1) +(b-1)(c-1) + (c-1)(a-1)]\\
+             & - (d-1)(e-1)(a-1)(b-1)(c-1)\\
+             &= abcr(de-1) - abc(de-1)\\
+             & = abc(de-1)(r-1)\\
+             & = 2*2*2*(2*2-1)*(2-1) = 24.
+\end{align*}
+\end{itemize}
+
 \end{document}
