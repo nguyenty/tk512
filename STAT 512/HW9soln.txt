@@ -1,0 +1,129 @@
+
+HW 9
+
+
+
+
+1.)  5^2.  Confound, e.g., AB w/ blocks.
+     x_1 + x_2 = 0,1,2,3,4 [5].  Then:
+
+     blk 0  blk 1  blk 2  blk 3  blk 4
+     (0,0)  (0,1)  (0,2)  (0,3)  (0,4)
+     (1,4)  (2,4)  (2,0)  (3,0)  (4,0)
+     (4,1)  (4,2)  (1,1)  (1,2)  (1,3)
+     (2,3)  (1,0)  (3,4)  (2,1)  (3,1)
+     (3,2)  (3,3)  (4,3)  (4,4)  (2,2)
+
+2.)  Now also confound AB^2, AB^3, AB^4
+
+     Corrected total:
+       df = 100-1 = 99
+       average of all data = 1
+       ss = 96*(0-1)^2 + 4*(25-1)^2 = 2400
+
+     Blocks:
+       df = 20-1 = 19
+       block averages:  4 blocks = 5
+                       16 blocks = 0
+       ss = 5*[4*(5-1)^2 + 16*(0-1)^2] = 400
+
+     Unconfounded trt's (A & B):
+       df = 5-1 = 4
+       level averages:  4 levels = 0
+                        1 level  = 5
+       ss = 20*[4*(0-1)^2 + 1*(5-1)^2] = 400
+
+     Confounded trt's (AB, AB^2, AB^3 AB^4):
+       df and level averages as with unconfounded trt's
+       ss = 15*[4*(0-1)^2 + 1*(5-1)^2] = 300
+
+     Residual (by difference):
+       df = 56
+       ss = 0
+
+3.)  3^(3-1).  Confound, e.g. AB and AC with blocks.
+     Generalized interactions:
+       AB(AC) = A^2BC = AB^2C^2
+       AB(AC)^2 = BC^2
+
+     Using AB and AC, sort by x_1 + x_2  and x_1 + x_3
+
+     blk:  (0,0) (0,1) (0,2) (1,0) (1,1) (1,2) (2,0) (2,1) (2,2)
+            000   001   002   010   011   012   020   021   022
+            122   120   121   102   100   101   112   110   111
+            211   212   210   221   222   220   201   202   200
+
+4.)  For example:
+       Rep 1: AB = AC = AB^2C^2 = BC^2
+       Rep 2: AB = AC^2 = AB^2C = BC
+       Rep 3: AC = BC = ABC^2 = AB^2
+       Rep 4: AB^2 = BC^2 = AC^2 = ABC
+     So:
+       Main effects are confounded in no reps
+       Two-factor interactions are confounded in 2 reps
+       Three-factor interactions are confounded in 1 rep
+
+5.)
+     Corrected total:
+       df = 108-1 = 107
+       average of all data = 1
+       ss = 104*(0-1)^2 + 4*(27-1)^2 = 2808
+
+     Blocks:
+       df = 36-1 = 35
+       block averages:  4 blocks = 9
+                       32 blocks = 0
+       ss = 3*[4*(9-1)^2 + 32*(0-1)^2] = 864
+
+     Unconfounded trt's (A, B, C):
+       df = 3-1 = 2
+       level averages:  2 levels = 0
+                        1 level  = 3
+       ss = 36*[2*(0-1)^2 + 1*(3-1)^2] = 216
+
+     Confounded in 2 reps (AB, AB^2, AC, AC^2, BC, BC^2)
+       df and level averages as with unconfounded trt's
+       ss = 18*[...] = 108
+
+     Confounded in 1 rep (ABC, ABC^2, AB^C, AB^2C^2)
+       df and level averages as with unconfounded trt's
+       ss = 27*[...] = 162
+
+     Residual (by difference):
+       df = 46
+       ss = 0
+
+6.)  3^(5-2).  Confound, e.g., ABC^2 and CDE^2 with blocks.
+     Pick the block in which x_1+x_2+2x_3 = 0 and x_3+x_4+2x_5 = 0
+
+     a.) ABC^2 and CDE^2, plus generalized interactions:
+           ABC^2(CDE^2) = ABDE^2
+           ABC^2*CDE^2)^2 = ABCD^2E
+
+     b.) ABC and DE
+         000     00 11 22
+         011     01 20 12
+         022     02 10 21
+         101     01 20 12
+         202     02 10 21
+         120     00 11 22
+         112     02 10 21
+         210     00 11 22
+         221     01 20 12
+
+7.)  Here's 1 ... the aliases of A
+     A (ABC^2)    = AB^C
+     A (ABC^2)^2  = BC^2
+     A (CDE^2)    = ACDE^2
+     A (CDE^2)^2  = AC^2D^2E
+     A (ABC^2)   (CDE^2)   = AB^2D^2E
+     A (ABC^2)^2 (CDE^2)   = BCD^2E
+     A (ABC^2)   (CDE^2)^2 = AB^2DE^2
+     A (ABC^2)^2 (CDE^2)^2 = BDE^2
+
+     Also strings containing each of B,C,D,E .. and 8 more
+
+       
+
+
+

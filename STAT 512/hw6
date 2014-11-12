@@ -1,0 +1,28 @@
+library(xtable)
+
+temp <- c(360,370,380,380,370,360)
+c1 <- c(67,65,155,108,140,33)
+c2 <- c(73,91,127,100,142,8)
+c3 <- c(83,87,147,90,121,46)
+c4 <- c(89,86,212,153,150,54)
+y <- c(c1,c2,c3,c4)
+f <- rep(1:6,4)
+coat <- rep(1:4,each = 6)
+rep(c("c1","c2","c3","c4"),each = 6)
+dat <- data.frame(furnace = f, temp  = rep(temp,4),coating = coat,y = y)
+
+
+datlm <- lm(y ~ as.factor(temp)*as.factor(coating),data = dat)
+aa <- anova(datlm)
+aa
+xtable(aa)
+
+#Split Plot
+
+library(nlme)
+spp <- lme(y~as.factor(coating)*as.factor(temp), random = ~1|furnace,data = dat)
+anova(spp)
+
+
+
+anova(spp,test="Chisq")

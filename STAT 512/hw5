@@ -1,0 +1,93 @@
+library(ggplot2)
+
+da <- c(6.11,6.70,6.60,NA,6.34,6.77,6.55,NA)
+db <- c(NA,6.22,6.11,6.22,NA,6.30,6.09,6.04)
+dc <- c(5.95,NA,6.52,6.54,6.20,NA,6.48,6.24)
+dd <- c(5.82,5.97,NA,6.18,6.06,6.02,NA,5.98)
+x <- 1:8
+radon <- data.frame(chamber = x, A = da,B = db, C =dc, D =dd)
+
+radon2<- data.frame(rad=c(da,db,dc,dd), chamber=as.factor(rep(1:8,4)), det = as.factor(rep(c('A','B','C','D'), each=8)) )
+radon2 <- subset(radon2, !is.na(rad))
+summary(radon2)
+
+m1 <- lm(rad~ chamber, data=radon2)
+m2 <- lm(rad~ chamber+det, data=radon2)
+
+anova(m1)
+anova(m2)
+
+drop1(m1)
+drop1(m2)
+
+radon3 <- subset(radon2, chamber %in% 1:4)
+m1 <- lm(rad~ chamber, data=radon3)
+m2 <- lm(rad~ det+chamber, data=radon3)
+
+
+#### part b
+
+ac <- radon[,"A"] - radon[,"C"]
+ac <- ac[!is.na(ac)]
+
+ab <- radon[,"A"] - radon[,"B"]
+ab <- ab[!is.na(ab)]
+
+ad <- radon[,"A"] - radon[,"D"]
+ad <- ad[!is.na(ad)]
+
+bc <- radon[,"B"] - radon[,"C"]
+bc <- bc[!is.na(bc)]
+
+bd <- radon[,"B"] - radon[,"D"]
+bd <- bd[!is.na(bd)]
+
+cd <- radon[,"C"] - radon[,"D"]
+cd <- cd[!is.na(cd)]
+diff <- c(ac,ab,ad,bc,bd,cd)
+diff2 <- data.frame( diff = diff, trt = rep(c("ac","ab","ad","bc","bd","cd"),each = 4))
+stripchart(diff2[,1]~diff2[,2],ylim=c(-0.5,1),vertical=TRUE,method = "stack",pch=1,offset=1,col="1",main="Differences of treatments")
+abline(h=0)
+
+#### Problem 7
+b <- 20 ; k <- 2; t0 <- 5;
+r <- b*k/t0
+lambda <- b*k * (k-1)/(t0*(t0-1))
+tau <- c(0,0,1,2,2)
+n <- 5 * r
+sigma <- 2
+tbar <- (r + r * 2+ r *4)/n
+ncp <- lambda*t0/k * sum((tau - tbar)^2)/sigma
+
+1-pf(qf(1-0.05,t0-1,n-t0-b+1),t0-1,n-t0-b+1,ncp = ncp)
+
+###
+
+X2 <- matrix(0,nrow = 24,ncol =4)
+fix(X2)
+X2
+X1 <- matrix(0,nrow =24, ncol = 8)
+
+fix(X1)
+X <- cbind(X1,X2)
+
+library(MASS)
+y <- c(da, db,dc, dd)
+betahat <- ginv(t(X) %*% X) %*% t(X) %*% y
+
+fractions(betahat)
+
+library(nlme)
+
+?lme
+
+
+fm2 <- lme( rad ~  det, data = radon2, random = ~ 1|chamber)
+summary(fm2)
+
+
+U <- t(X1) %*% X2
+z <- tapply(radon2$rad, radon2$chamber, sum)
+mod.bt <- lm(z~U)
+
+
