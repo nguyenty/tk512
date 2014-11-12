@@ -1,0 +1,187 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{amsmath}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+\title{HW8 STAT512 Fall2014}
+
+\author{Yet Nguyen}
+  
+\maketitle
+
+\section*{1. Problem 3}
+\begin{itemize}
+\item[(a)] The generating relation for the desing used is 
+\[
+I = +ABC = -ADE (= -BCDE)
+\]
+
+\item[(b)] The estimable strings for the experiment are
+\begin{align*}
+& A + BDE + ABCE + CD\\
+& B +ADE + CE + ABCD\\
+& C+ ABCDE + BE + AD\\
+& D + ABE +BCDE + AC\\
+& E + ABD + BC + ACDE\\
+& AB +DE +ACE +BCD\\
+& BD + AE+CDE + ABC
+\end{align*}
+\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(xtable)}
+\hlcom{## data}
+\hlstd{X} \hlkwb{<-}\hlkwd{as.data.frame}\hlstd{(} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,}
+              \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,}
+              \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,}
+              \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,}
+              \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,}
+              \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,}
+              \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,}
+              \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}
+            \hlkwc{byrow} \hlstd{= T,} \hlkwc{ncol} \hlstd{=} \hlnum{5}\hlstd{))}
+
+\hlkwd{colnames}\hlstd{(X)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"A"}\hlstd{,} \hlstr{"B"}\hlstd{,} \hlstr{"C"}\hlstd{,} \hlstr{"D"}\hlstd{,} \hlstr{"E"}\hlstd{)}
+\hlcom{# Calculate estimates of the five strings that}
+\hlcom{# include main effects for the strains A}
+\hlstd{data} \hlkwb{<-} \hlkwd{cbind}\hlstd{(X,} \hlkwc{y} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{2.9}\hlstd{,}\hlnum{2.44}\hlstd{,}\hlnum{3.35}\hlstd{,}
+                       \hlnum{3.35}\hlstd{,}\hlnum{2.14}\hlstd{,}\hlnum{2.6}\hlstd{,}\hlnum{1.3}\hlstd{))}
+\hlkwd{xtable}\hlstd{(}\hlkwd{summary}\hlstd{(}\hlkwd{lm}\hlstd{(y} \hlopt{~} \hlstd{A}\hlopt{+}\hlstd{B}\hlopt{+}\hlstd{C}\hlopt{+}\hlstd{D}\hlopt{+}\hlstd{E,} \hlkwc{data} \hlstd{= data))}\hlopt{$}\hlstd{coef,}
+       \hlkwc{caption} \hlstd{=} \hlstr{"Calculate estimates of the 
+       five strings that
+       include main effects 
+       for the strains B."}\hlstd{)}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Nov 12 17:12:34 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+  \hline
+(Intercept) & 2.26 & 0.25 & 9.08 & 0.01 \\ 
+  A & 0.16 & 0.25 & 0.65 & 0.58 \\ 
+  B & 0.16 & 0.25 & 0.65 & 0.58 \\ 
+  C & 0.09 & 0.25 & 0.35 & 0.76 \\ 
+  D & -0.79 & 0.25 & -3.17 & 0.09 \\ 
+  E & -0.56 & 0.25 & -2.25 & 0.15 \\ 
+   \hline
+\end{tabular}
+\caption{Calculate estimates of the 
+       five strings that
+       include main effects 
+       for the strains B.} 
+\end{table}
+\begin{kframe}\begin{alltt}
+\hlcom{# Calculate estimates of the five strings that}
+\hlcom{# include main effects for the strains B}
+
+\hlstd{datb} \hlkwb{<-} \hlkwd{cbind}\hlstd{(X,} \hlkwc{y} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2.44}\hlstd{,} \hlnum{5.05}\hlstd{,} \hlnum{4.1}\hlstd{,} \hlnum{7.03}\hlstd{,}
+                       \hlnum{5.28}\hlstd{,} \hlnum{3.95}\hlstd{,} \hlnum{4.82}\hlstd{,} \hlnum{2.74}\hlstd{))}
+\hlkwd{xtable}\hlstd{(}\hlkwd{summary}\hlstd{(}\hlkwd{lm}\hlstd{(y} \hlopt{~} \hlstd{A}\hlopt{+}\hlstd{B}\hlopt{+}\hlstd{C}\hlopt{+}\hlstd{D}\hlopt{+}\hlstd{E,} \hlkwc{data} \hlstd{= datb))}\hlopt{$}\hlstd{coef,}
+       \hlkwc{caption} \hlstd{=} \hlstr{"Calculate estimates of the 
+       five strings that
+       include main effects 
+       for the strains B."}\hlstd{)}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Nov 12 17:12:34 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+  \hline
+(Intercept) & 4.43 & 0.10 & 43.43 & 0.00 \\ 
+  A & 0.27 & 0.10 & 2.61 & 0.12 \\ 
+  B & 0.25 & 0.10 & 2.42 & 0.14 \\ 
+  C & -0.23 & 0.10 & -2.24 & 0.15 \\ 
+  D & -1.12 & 0.10 & -10.98 & 0.01 \\ 
+  E & -0.66 & 0.10 & -6.51 & 0.02 \\ 
+   \hline
+\end{tabular}
+\caption{Calculate estimates of the 
+       five strings that
+       include main effects 
+       for the strains B.} 
+\end{table}
+
+From those results, it seems that main effects D and E are significant for response B. For response A, only D is significant (if the significant level is .1).
+
+\item[(c)] From the part b)  if consider response A: only effect D is significant. Hence, I would recommend the next $2^{5-2}$ fraction is 
+\[
+I= -ABDE = BCE = -ACD
+\]
+so that this combine with the other fraction $I = ABDE = BDE = ACD$ will imply
+a $2^{5-1}$ fraction $I = BCE$, which contain no effects involving D. As a result, the aliases of the main effect for D is $D = BCDE$ which is a four-factor interaction. 
+
+On the other hand, if consider response B: effect D and E are significant. Hence, I would recommend the next $2^{5-2}$ fraction is 
+\[
+I = +ABDE = -BCE = -ACD
+\]
+so that this combine with the other fraction $I = ABDE = BDE = ACD$ will imply
+a $2^{5-1}$ fraction $I = ABDE$, which contain no effects involving D. As a result, the aliases of the main effect for D is $D = ABE$, for C is $C = ABD$ which are a three-factor interaction. 
+\end{itemize}
+\section*{2. Problem 5}
+A fractional factorial design of resolution V allows estimation of all parameters in a model containing an intercept, main effects, and two factor interaction. Therefore the number of treatment included in the design must be at least as large as the number of parameter in this model. Using this information to:
+
+(a) Find a lower bound of the number of treatment in a regular fractional factorial of resolution V for 8 factors
+
+(b) Find a generating relation that can be used to construvt a resolution V fraction of this side.
+
+\section*{3. Problem 8}
+
+T discussed the used of product arrays in industrial experiments. An example of a product array in six factrs can be constructed by generating the 3-factor fraction associated with I = +ABC and the 3-factors associated with I = +DEF and constructing the 16 treatment design comprised of ecery combination of the four treatment in a regular fractional factorial design in all6 factors. What is the generating relation of this product array design?
+
+\end{document}
