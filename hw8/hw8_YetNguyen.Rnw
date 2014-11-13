@@ -83,19 +83,23 @@ so that this combine with the other fraction $I = ABDE = BDE = ACD$ will imply
 a $2^{5-1}$ fraction $I = ABDE$, which contain no effects involving D. As a result, the aliases of the main effect for D is $D = ABE$, for C is $C = ABD$ which are a three-factor interaction. 
 \end{itemize}
 \section*{2. Problem 5}
-A fractional factorial design of resolution V allows estimation of all parameters in a model containing an intercept, main effects, and two factor interaction. Therefore the number of treatment included in the design must be at least as large as the number of parameter in this model. Using this information to:
+\begin{itemize}
+\item[(a)] The number of parameter in this case is : 1(intercept) + 8 (main effects) + 
+28 (two-factor interactions) = 37. Since this is a regular fractional factorial design, the number of treatment is at least $2^6$ =64 which is the smallest power of 2 larger than 37.
 
-(a) Find a lower bound of the number of treatment in a regular fractional factorial of resolution V for 8 factors
-
-(b) Find a generating relation that can be used to construvt a resolution V fraction of this side.
-
-
-(a) The number of parameter in this case is : 1(intercept) + 8 (main effect) + 
-28 (two-factor interaction) = 37. Since this is a regular fractional factorial design, the number of treatment is at least $2^6$ =64 which is the smallest power of 2 larger than 37.
-
-(b)
+\item[(b)] Suppose the 8 factors are $A, B, C, D, E, F, G, H$. then a generating relation that cab be used to construct a resolution V fraction of this size is 
+\[
+I = +ABCDE = +ABFGH (= +CDEFGH).
+\]
+The liased string of main effects, for example A, do not contain 2-factor interaction:
+\[
+A = +BCDE = +BFGH (=+ACDEFGH).
+\]
+Similarly, the strings of 2-factor interactions do not contain any main effects or intercept. Therefore, intercept, main effects, and 2-factor interactions are  estimable.
+\end{itemize}
 \section*{3. Problem 8}
-
-T discussed the used of product arrays in industrial experiments. An example of a product array in six factrs can be constructed by generating the 3-factor fraction associated with I = +ABC and the 3-factors associated with I = +DEF and constructing the 16 treatment design comprised of ecery combination of the four treatment in a regular fractional factorial design in all6 factors. What is the generating relation of this product array design?
+\[
+I = +ABC = +DEF (= +ABCDEF)
+\]
 
 \end{document}
