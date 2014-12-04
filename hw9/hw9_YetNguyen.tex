@@ -1,0 +1,158 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{amsmath}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+\title{HW9 STAT512 Fall2014}
+
+\author{Yet Nguyen}
+  
+\maketitle
+\section*{1 \& 2}
+\begin{kframe}
+\begin{alltt}
+\hlcom{# model matrix#####}
+\hlkwd{library}\hlstd{(plyr)}
+\hlkwd{set.seed}\hlstd{(}\hlnum{1}\hlstd{)}
+\hlstd{D} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,}
+              \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,}
+              \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,}
+              \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,}
+              \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,}
+              \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{),}
+            \hlkwc{ncol} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{byrow} \hlstd{= T)}
+\hlstd{X} \hlkwb{<-} \hlkwd{cbind}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{6}\hlstd{), D); intercept} \hlkwb{<-} \hlnum{2}
+\hlstd{m} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{10}\hlstd{); s.b} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{10}\hlstd{)}
+\hlstd{sim.func} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{m}\hlstd{,} \hlkwc{s.b}\hlstd{)\{}
+  \hlstd{main.effect} \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{10}\hlstd{)}
+  \hlstd{nonzero.effect}\hlkwb{<-} \hlkwd{sample}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{, m)}
+  \hlstd{main.effect[nonzero.effect]} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(m,} \hlnum{0}\hlstd{, s.b)}
+  \hlstd{noise} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{6}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{)}
+  \hlstd{mean.vector} \hlkwb{<-} \hlkwd{c}\hlstd{(intercept, main.effect)}
+  \hlstd{y} \hlkwb{<-} \hlstd{X}\hlopt{%*%}\hlstd{(mean.vector)} \hlopt{+} \hlstd{noise}
+  \hlstd{Rsquare} \hlkwb{<-} \hlkwd{laply}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{11}\hlstd{,} \hlkwa{function}\hlstd{(}\hlkwc{i}\hlstd{)}
+    \hlkwd{summary}\hlstd{(}\hlkwd{lm}\hlstd{(y} \hlopt{~}\hlstd{X[,i]))}\hlopt{$}\hlstd{r.squared)}
+  \hlstd{ans1} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{which.max}\hlstd{(Rsquare)} \hlopt{%in%}
+                       \hlstd{nonzero.effect)}
+  \hlstd{ans2} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{which.max}\hlstd{(Rsquare)} \hlopt{%in%}
+                       \hlkwd{which.max}\hlstd{(}\hlkwd{abs}\hlstd{(nonzero.effect)))}
+  \hlkwd{return}\hlstd{(}\hlkwd{c}\hlstd{(}\hlkwc{ans1}\hlstd{=ans1,} \hlkwc{ans2} \hlstd{= ans2))}
+\hlstd{\}}
+
+\hlstd{result.func} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{m}\hlstd{,}\hlkwc{s.b}\hlstd{)\{}
+  \hlstd{out} \hlkwb{<-} \hlkwd{laply}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{1000}\hlstd{,} \hlkwa{function}\hlstd{(}\hlkwc{i}\hlstd{)}\hlkwd{sim.func}\hlstd{(m,s.b))}
+  \hlstd{res} \hlkwb{<-} \hlkwd{apply}\hlstd{(out,} \hlnum{2}\hlstd{, mean)}
+  \hlkwd{return}\hlstd{(res)}
+\hlstd{\}}
+
+\hlstd{par} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{,}
+                \hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,}
+                \hlnum{1}\hlstd{,}\hlnum{3}\hlstd{,}
+                \hlnum{1}\hlstd{,}\hlnum{4}\hlstd{,}
+                \hlnum{2}\hlstd{,}\hlnum{1}\hlstd{,}
+                \hlnum{2}\hlstd{,}\hlnum{2}\hlstd{,}
+                \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}
+                \hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}
+                \hlnum{3}\hlstd{,}\hlnum{1}\hlstd{,}
+                \hlnum{3}\hlstd{,}\hlnum{2}\hlstd{,}
+                \hlnum{3}\hlstd{,}\hlnum{3}\hlstd{,}
+                \hlnum{3}\hlstd{,}\hlnum{4}\hlstd{,}
+                \hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}
+                \hlnum{4}\hlstd{,}\hlnum{2}\hlstd{,}
+                \hlnum{4}\hlstd{,}\hlnum{3}\hlstd{,}
+                \hlnum{4}\hlstd{,}\hlnum{4}\hlstd{),} \hlkwc{ncol} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{byrow} \hlstd{= T)}
+\hlstd{final.result} \hlkwb{<-} \hlkwd{laply}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{16}\hlstd{,} \hlkwa{function}\hlstd{(}\hlkwc{i}\hlstd{)}
+  \hlkwd{result.func}\hlstd{(m[par[i,}\hlnum{1}\hlstd{]],s.b[par[i,}\hlnum{2}\hlstd{]]))}
+\hlstd{final.result2} \hlkwb{<-} \hlkwd{cbind}\hlstd{(}\hlkwc{m} \hlstd{=} \hlkwd{as.character}\hlstd{(}\hlkwd{rep}\hlstd{(m,} \hlkwc{each} \hlstd{=} \hlnum{4}\hlstd{)),}
+                       \hlkwc{sigma.beta} \hlstd{=} \hlkwd{as.character}\hlstd{(}\hlkwd{rep}\hlstd{(s.b,} \hlnum{4}\hlstd{)),}
+                       \hlstd{final.result)}
+\end{alltt}
+\end{kframe}
+
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Thu Dec  4 12:17:44 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllll}
+  \hline
+ & m & sigma.beta & ans1 & ans2 \\ 
+  \hline
+1 & 1 & 1 & 0.461 & 0.097 \\ 
+  2 & 1 & 2 & 0.656 & 0.086 \\ 
+  3 & 1 & 5 & 0.875 & 0.104 \\ 
+  4 & 1 & 10 & 0.918 & 0.092 \\ 
+  5 & 2 & 1 & 0.628 & 0.108 \\ 
+  6 & 2 & 2 & 0.823 & 0.098 \\ 
+  7 & 2 & 5 & 0.936 & 0.096 \\ 
+  8 & 2 & 10 & 0.975 & 0.078 \\ 
+  9 & 5 & 1 & 0.778 & 0.098 \\ 
+  10 & 5 & 2 & 0.853 & 0.099 \\ 
+  11 & 5 & 5 & 0.852 & 0.101 \\ 
+  12 & 5 & 10 & 0.869 & 0.084 \\ 
+  13 & 10 & 1 & 1 & 0.093 \\ 
+  14 & 10 & 2 & 1 & 0.108 \\ 
+  15 & 10 & 5 & 1 & 0.101 \\ 
+  16 & 10 & 10 & 1 & 0.098 \\ 
+   \hline
+\end{tabular}
+\caption{Simulation result based on 1000 replication 
+      for each scenario of m and sigma.beta. The column ans1 is
+      the probability that the apparently best-fitting main effect
+      is actually one of the active factor. The column ans2 is
+      the probability that the apparently best-fitting main 
+      effect is actually the  active factor with the
+      largest absolute value main effect. } 
+\end{table}
+
+\end{document}
